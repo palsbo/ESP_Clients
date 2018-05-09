@@ -1,9 +1,15 @@
+#ifdef ESP8266
+#include <ESP8266WiFi.h>
+#else
+#include <WiFi.h>
+#endif
 #include <PubSubClient.h>
 #include "mqttclient.h"
 
 #define MAXONS  15
 
-PubSubClient client;
+WiFiClient espClient;
+PubSubClient client(espClient);
 
 struct {
   private:
@@ -54,61 +60,46 @@ struct {
 } sublist;
 
 bool isConnected = false;
-mqttnotfoundcb notfound = [](char * topic, char * data){};
+mqttnotfoundcb notfound = [](char * topic, char * data) {};
 
 void MQTTCLIENT::onNotFound(mqttnotfoundcb cb) {
   notfound = cb;
 }
 
-void MQTTCLIENT::mqttcallback(char* topic, byte* payload, unsigned int length) {
+void MQTTCLIENT::mqttCallback(char* topic, byte* payload, unsigned int length) {
   char s1[length + 1];
+  s1[length] = 0;
   memcpy(s1, payload, length);
   s1[length] = 0;
   if (!mq.lookup(topic, s1)) notfound(topic, s1);
 }
 
-void MQTTCLIENT::reconnect() {
-  if (constatus == 0) return;
-  while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
-    if (client.connect("arduinoClient")) {
-      isConnected = true;
-      mq.lookup("connected", "");
-      Serial.println("connected");
-    } else {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
-      delay(5000);
-    }
-  }
-}
 MQTTCLIENT::MQTTCLIENT() {
   mq.add("connect", [](char * data) {});
   mq.add("failed", [](char * data) {});
 };
 
-void MQTTCLIENT::connect(char * host, int port, char * clientid, char * user, char * pass) {
-  auth.host = host;
-  auth.port = port;
-  auth.clientid = clientid;
-  auth.user = user;
-  auth.pass = pass;
-  if (client.connected()) client.disconnect();
-  //client.setServer(auth.host, auth.port);
-  client.setCallback(mqttcallback);
+void MQTTCLIENT::begin(char * _clientid, char * _host, int _port, char * _user, char * _pass) {
+  host = _host;
+  port = _port;
+  clientid = _clientid;
+  user = _user;
+  pass = _pass;
+  if (client.connected()) {
+    client.disconnect();
+  }
+  client.setServer(host, port);
+  client.setCallback(mqttCallback);
 };
 
 void MQTTCLIENT::loop() {
   while ((!client.connected()) && (millis() > mqttConnectTimer)) {
-    client.setServer(auth.host, auth.port);
-    if (client.connect(auth.clientid, auth.user, auth.pass)) {
+    client.setServer(host, port);
+    if (client.connect(clientid, user, pass)) {
       mq.lookup("connect", "");
     } else {
-      //  here if failed
       mqttConnectTimer = millis() + 5000;
-      mq.lookup("failed", "");
+      mq.lookup("disconnect", "");
     }
   }
   if (client.connected()) client.loop();
