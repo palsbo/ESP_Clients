@@ -31,7 +31,7 @@ This library connects to a MQTT-broker as a client.
 
 	#include <mqttclient.h>
 	
-###	Define objedt
+###	Define object
 
 	MQTTCLIENT mqtt;
 	
