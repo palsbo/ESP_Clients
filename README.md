@@ -8,6 +8,12 @@ This library expects messages to be received as JSON. Each key in the JSON array
 'on' methods include on("connect",...) and on("disconnect",...);
 The 'on' method on("data",...) will overwrite JSON decoding and handle the full message, exept for the message "__ping__" that will return a message "__pong__" (for keep alive);
 
+Uses the followng libraries:
+
+	WebSocketsClient.h     https://github.com/brandenhall/Arduino-Websocket/
+	ArduinoJson.h          https://github.com/bblanchon/ArduinoJson/blob/master/ArduinoJson.h
+
+
 ###	Include
 
 	#include <socclient.h>
@@ -26,6 +32,10 @@ The 'on' method on("data",...) will overwrite JSON decoding and handle the full 
 ##	MQTT library
 
 This library connects to a MQTT-broker as a client.
+
+Uses the followng libraries:
+
+	PubSubClient.h         https://github.com/knolleary/pubsubclient
 
 ###	Include
 
