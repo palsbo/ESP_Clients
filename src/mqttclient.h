@@ -6,7 +6,9 @@ typedef void (*mqttnotfoundcb)(char * topic, char * data);
 
 class MQTTCLIENT {
   private:
-  static void mqttCallback(char* topic, byte* payload, unsigned int length);
+    bool isConnected = false;
+    static mqttnotfoundcb notfound;
+    static void mqttCallback(char* topic, byte* payload, unsigned int length);
     long mqttConnectTimer;
     int constatus = 0;
     char * host;

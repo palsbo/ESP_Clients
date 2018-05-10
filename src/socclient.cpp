@@ -2,6 +2,7 @@
 #include <ArduinoJson.h>
 #include "socclient.h"
 
+  
 #define MAXONS  15
 
 WebSocketsClient webSocket;
@@ -36,19 +37,17 @@ struct {
     }
 } ws;
 
-bool isConnected = false;
-
-void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
+void SOCCLIENT::webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
   char s1[length + 1];
   strncpy_P(s1, (char*)payload, length);
   s1[length] = 0;
   switch (type) {
     case WStype_DISCONNECTED:
-      isConnected = false;
+      //isConnected = false;
       ws.lookup("disconnect", &s1[0]);
       break;
     case WStype_CONNECTED:
-      isConnected = true;
+      //isConnected = true;
       ws.lookup("connect", &s1[0]);
       break;
     case WStype_TEXT:

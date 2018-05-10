@@ -42,25 +42,7 @@ struct {
     }
 } mq;
 
-struct {
-  const char * item[10];
-  int count = 0;
-  void add(const char * sub) {
-    for (int i = 0; i < count; i++) if (!strcmp(sub, item[i])) return;
-    item[count++] = sub;
-  };
-  void sub(const char * sub) {
-    for (int i = 0; i < count; i++) if (!strcmp(sub, item[i])) {
-        if (i < count) {
-          item[i] = item[count - 1];
-          count--;
-        }
-      }
-  };
-} sublist;
-
-bool isConnected = false;
-mqttnotfoundcb notfound = [](char * topic, char * data) {};
+mqttnotfoundcb MQTTCLIENT::notfound = [](char * topic, char * data) {};
 
 void MQTTCLIENT::onNotFound(mqttnotfoundcb cb) {
   notfound = cb;
