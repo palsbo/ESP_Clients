@@ -1,19 +1,19 @@
 {
   "name": "ESP_Clients",
-  "version": "1.0.1",
+  "version": "1.2",
   "keywords": "MQTT","WebSocket",
   "description": "Objects by Erik Palsbo",
   "repository":
   {
     "type": "git",
-    "url": "http://palsbo.com/rep/erikslib"
+    "url": "https://github.com/palsbo/ESP_Clients"
   },
   "authors":
   [
     {
         "name": "Erik Palsbo",
         "email": "erik@palsbo.com",
-        "url": "http://palsbo.com"
+        "url": "https://github.com/palsbo"
     }
   ],
   "frameworks": "arduino",
