@@ -4,10 +4,23 @@
 
 typedef void (*wscb)(char * data);
 
+#define MAXONS  15
+
+class WSCONS {
+  private:
+    struct {
+      String key;
+      wscb func;
+    } item[MAXONS];
+    int count = 0;
+  public:
+    void add(String key, wscb func);
+    void lookup (String key, char * data);
+};
+
 class SOCCLIENT {
   private:
     bool isConnected = false;
-    static void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);  
   public:
     SOCCLIENT();
     void connect(char * host, int port);

@@ -4,6 +4,20 @@
 typedef void (*mqttcb)(char * data);
 typedef void (*mqttnotfoundcb)(char * topic, char * data);
 
+#define MAXONS  15
+
+class MQCONS {
+  private:
+    struct {
+      String topic;
+      mqttcb func;
+    } item[MAXONS];
+    int count = 0;
+  public:
+    void add(String topic, mqttcb func);
+    bool lookup (char * topic, char * data);
+};
+
 class MQTTCLIENT {
   private:
     bool isConnected = false;
