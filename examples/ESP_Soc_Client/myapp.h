@@ -3,9 +3,10 @@
 
 #include "webserver.h"
 #include "socclient.h"
-#define WSHOST  "192.168.1.3"
-#define WSPORT  81
-#include <init.h>
+
+#define WSHOST  ".."; //  insert your own host uri
+#define WSPORT  81;   //  insert your own host port
+#include <init.h>     //  and remove this line
 
 #define WSC_AUTH  WSHOST,WSPORT
 WEBSERVER webserver(80);
