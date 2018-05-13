@@ -88,7 +88,7 @@ void MQTTCLIENT::publish(char* topic, String value) {
 }
 
 void MQTTCLIENT::publish(char* topic, String value, bool retain) {
-  if (client.connected()) client.publish(topic, value.c_str()), retain;
+  if (client.connected()) client.publish(topic, value.c_str(), retain);
 }
 void MQTTCLIENT::subscribe(char* topic) {
   client.subscribe(topic);
