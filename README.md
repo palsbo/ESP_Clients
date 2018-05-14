@@ -6,6 +6,7 @@ General client libraries for WebSocket and MQTT.
 
 This library expects messages to be received as JSON. Each key in the JSON array will generate an evenet handled by the 'on' method.
 'on' methods include on("connect",...) and on("disconnect",...);
+The 'on' method on('notJSON',...) will handle messages with no or invalid JSON encoding.
 The 'on' method on("data",...) will overwrite JSON decoding and handle the full message, exept for the message "__ping__" that will return a message "__pong__" (for keep alive);
 
 Uses the followng libraries:

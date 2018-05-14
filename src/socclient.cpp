@@ -47,12 +47,17 @@ void webSocketClientEvent(WStype_t type, uint8_t * payload, size_t length) {
 SOCCLIENT::SOCCLIENT() {
   on("connect", [](char * data) { });
   on("disconnect", [](char * data) { });
+  on("notJSON", [](char * data) { });
   on("data", [](char * data) {
     StaticJsonBuffer<200> jsonBuffer;
     JsonObject& root = jsonBuffer.parseObject(data);
-    for (auto field : root) {
-      String value = root[field.key];
-      ws.lookup(field.key, (char*)value.c_str());
+    if (!root.success()) {
+      ws.lookup("notJSON", data);
+    } else {
+      for (auto field : root) {
+        String value = root[field.key];
+        ws.lookup(field.key, (char*)value.c_str());
+      }
     }
   });
 }
